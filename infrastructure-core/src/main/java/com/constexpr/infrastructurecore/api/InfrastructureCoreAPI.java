@@ -43,16 +43,11 @@ public class InfrastructureCoreAPI {
      * Initializes the API for internal and external use.
      * @apiNote should only ever be called once per plugin lifecycle.
      *
-     * @param infrastructureCorePluginHandle The Core Plugin Handle
-     *
      * @since 1.0.0-ALPHA
      */
-    public static void initialize(InfrastructureCorePluginHandle infrastructureCorePluginHandle) {
-        InfrastructureCoreAPI.infrastructureCorePluginHandle = infrastructureCorePluginHandle;
-
+    public static void initialize() {
         // Create and Initialize the API Command Manager.
         infrastructureCommandManager = new InfrastructureCommandManager();
-        infrastructureCommandManager.initializeCommands();
     }
 
     /**
@@ -64,6 +59,19 @@ public class InfrastructureCoreAPI {
      */
     public static InfrastructureCorePluginHandle getInfrastructureCorePluginHandle() {
         return infrastructureCorePluginHandle;
+    }
+
+    /**
+     * Standard Setter for the Core Plugin Handle.
+     *
+     * @param infrastructureCorePluginHandle Core Plugin Handle
+     *
+     * @since 1.0.0-ALPHA
+     */
+    public static void setInfrastructureCorePluginHandle(InfrastructureCorePluginHandle infrastructureCorePluginHandle) {
+        InfrastructureCoreAPI.infrastructureCorePluginHandle = infrastructureCorePluginHandle;
+
+        infrastructureCommandManager.initializeCommands();
     }
 
     /**

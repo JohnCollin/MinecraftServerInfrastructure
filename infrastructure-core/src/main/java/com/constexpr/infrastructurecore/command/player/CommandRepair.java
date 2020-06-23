@@ -25,7 +25,9 @@
 package com.constexpr.infrastructurecore.command.player;
 
 import co.aikar.commands.annotation.*;
+import com.constexpr.infrastructurecore.InfrastructureCorePluginHandle;
 import com.constexpr.infrastructurecore.command.InfrastructureCommand;
+import com.constexpr.infrastructurecore.command.InfrastructureCommandManager;
 import com.constexpr.infrastructurecore.utilities.player.item.ItemUtilities;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,8 +42,9 @@ import org.bukkit.inventory.PlayerInventory;
  */
 @CommandAlias("repair|fix|efix|erepair")
 public class CommandRepair extends InfrastructureCommand {
+
     /**
-     * Subcommand Handler for the hand subcommand of repair.
+     * Subcommand Handler for the hand subcommand of /repair.
      *
      * @param player The Player Command Sender.
      *
@@ -52,7 +55,7 @@ public class CommandRepair extends InfrastructureCommand {
     @Syntax("<+tag> [hand/all]")
     @CommandPermission("infrastructure.repair")
     @Description("Repair one or more items.")
-    public static void onHandRepairCommand(Player player) {
+    public static void onRepairHandCommand(Player player) {
         // Get the ItemStack in the Player's Main Hand.
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
@@ -74,7 +77,7 @@ public class CommandRepair extends InfrastructureCommand {
     @Syntax("<+tag> [hand/all]")
     @CommandPermission("infrastructure.repair")
     @Description("Repair one or more items.")
-    public static void onAllRepairCommand(Player player) {
+    public static void onRepairAllCommand(Player player) {
         // Get the PlayerInventory object from the Player.
         PlayerInventory playerInventory = player.getInventory();
 

@@ -42,7 +42,14 @@ import java.util.logging.Logger;
  * @since 1.0.0-ALPHA
  */
 public final class InfrastructureCorePluginHandle extends JavaPlugin {
-    public static Logger LOGGER = Bukkit.getLogger();
+    public static Logger LOGGER;
+
+    static {
+        LOGGER = Bukkit.getLogger();
+
+        LOGGER.info("Initializing InfrastructureCoreAPI...");
+        InfrastructureCoreAPI.initialize();
+    }
 
     /**
      * Constructor for InfrastructureCorePluginHandle.enabled
@@ -66,7 +73,8 @@ public final class InfrastructureCorePluginHandle extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        InfrastructureCoreAPI.initialize(this);
+        LOGGER.info("Updating InfrastructureCoreAPI with most recent instance...");
+        InfrastructureCoreAPI.setInfrastructureCorePluginHandle(this);
     }
 
     /**

@@ -28,6 +28,7 @@ import co.aikar.commands.PaperCommandManager;
 import com.constexpr.infrastructurecore.InfrastructureCorePluginHandle;
 import com.constexpr.infrastructurecore.api.InfrastructureCoreAPI;
 import com.constexpr.infrastructurecore.command.player.CommandRepair;
+import com.constexpr.infrastructurecore.command.player.CommandSuicide;
 
 /**
  * The InfrastructureCommandManager is a wrapper for the ACF Command Manager
@@ -37,19 +38,14 @@ import com.constexpr.infrastructurecore.command.player.CommandRepair;
  * @since 1.0.0-ALPHA
  */
 public class InfrastructureCommandManager {
-    private final PaperCommandManager commandManager;
+    private PaperCommandManager commandManager;
 
     /**
      * Default Constructor for Initialization
      *
      * @since 1.0.0-ALPHA
      */
-    public InfrastructureCommandManager() {
-        InfrastructureCorePluginHandle pluginHandle = InfrastructureCoreAPI.getInfrastructureCorePluginHandle();
-
-        // Create the ACF Command Manager that the class wraps.
-        this.commandManager = new PaperCommandManager(pluginHandle);
-    }
+    public InfrastructureCommandManager() { }
 
     /**
      * Initialization function for all InfrastructureCore commands.
@@ -57,6 +53,22 @@ public class InfrastructureCommandManager {
      * @since 1.0.0-ALPHA
      */
     public void initializeCommands() {
+        InfrastructureCorePluginHandle pluginHandle = InfrastructureCoreAPI.getInfrastructureCorePluginHandle();
+
+        // Create the ACF Command Manager that the class wraps.
+        this.commandManager = new PaperCommandManager(pluginHandle);
+
+        // Initialize Commands
         commandManager.registerCommand(new CommandRepair());
+        commandManager.registerCommand(new CommandSuicide());
+    }
+
+    /**
+     * Standard Getter for the ACF Paper Command Manager.
+     *
+     * @return The ACF Paper Command Manager.
+     */
+    public PaperCommandManager getACFPaperCommandManager() {
+        return commandManager;
     }
 }
