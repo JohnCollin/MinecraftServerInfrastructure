@@ -4,7 +4,7 @@ The Minecraft Server Infrastructure Project (or MSIP) is a project that supplies
 
 The Minecraft Server Infrastructure Project currently has one subproject:
 
-* [InfrastructureCore]() - Infrastructure Core is the core plugin of the Minecraft Server Infrastructure Project that supplies easy-to-use utilities for Minecraft Server Owners and Administrators.
+* [InfrastructureCore](https://github.com/JohnCollin/MinecraftServerInfrastructure/tree/master/infrastructure-core) - Infrastructure Core is the core plugin of the Minecraft Server Infrastructure Project that supplies easy-to-use utilities for Minecraft Server Owners and Administrators.
 
 ## Contributing
 
