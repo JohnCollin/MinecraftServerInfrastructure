@@ -1,0 +1,15 @@
+name: InfrastructureCore
+version: 1.0.0-ALPHA
+main: com.constexpr.infrastructurecore.InfrastructureCorePluginHandle
+api-version: 1.15
+prefix: InfrastructureCore
+authors: [constexpr]
+description: Infrastructure Core is the core plugin of the Minecraft Server Infrastructure Project that supplies easy-to-use utilities for Minecraft Server Owners and Administrators.
+website: github.com/JohnCollin
+
+commands:
+  repair:
+    description: Repair one or more items.
+    aliases: [fix, efix, erepair]
+    permission: infrastructure.repair
+    usage: /repair [hand/all]
