@@ -27,6 +27,7 @@ package com.constexpr.infrastructurecore.command;
 import co.aikar.commands.PaperCommandManager;
 import com.constexpr.infrastructurecore.InfrastructureCorePluginHandle;
 import com.constexpr.infrastructurecore.api.InfrastructureCoreAPI;
+import com.constexpr.infrastructurecore.command.player.CommandEnchant;
 import com.constexpr.infrastructurecore.command.player.CommandRepair;
 import com.constexpr.infrastructurecore.command.player.CommandSuicide;
 
@@ -59,6 +60,7 @@ public class InfrastructureCommandManager {
         this.commandManager = new PaperCommandManager(pluginHandle);
 
         // Initialize Commands
+        commandManager.registerCommand(new CommandEnchant());
         commandManager.registerCommand(new CommandRepair());
         commandManager.registerCommand(new CommandSuicide());
     }

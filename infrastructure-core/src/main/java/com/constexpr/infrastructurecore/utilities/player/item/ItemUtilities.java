@@ -25,6 +25,7 @@
 package com.constexpr.infrastructurecore.utilities.player.item;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,41 +42,6 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class ItemUtilities {
     /**
-     * Item Exit Values that inform status of operation as return value
-     *
-     * @since 1.0.0-ALPHA
-     */
-    public enum ItemRepairExitValue {
-        /**
-         * Item Operation Completed Successfully with no errors or warnings.
-         *
-         * @since 1.0.0-ALPHA
-         */
-        SUCCESS(),
-
-        /**
-         * Item Operation Completed Succesfully with warnings.
-         *
-         * @since 1.0.0-ALPHA
-         */
-        PARTIAL_SUCCESS(),
-
-        /**
-         * Item Operation was not completed because items in question were null.
-         *
-         * @since 1.0.0-ALPHA
-         */
-        AIR_ITEM(),
-
-        /**
-         * Item Operation was not completed because items were illegal.
-         *
-         * @since 1.0.0-ALPHA
-         */
-        ILLEGAL_ITEM()
-    }
-
-    /**
      * Sets a given ItemStack's damage amount to 0, assuming that it's repairable.
      *
      * @param itemStack ItemStack to repair
@@ -84,7 +50,8 @@ public class ItemUtilities {
      * @since 1.0.0-ALPHA
      */
     public static ItemRepairExitValue repairItem(ItemStack itemStack) {
-        // Material Type AIR Guard Statement
+        // Material Type AIR Guard Statements
+        if(itemStack == null) return ItemRepairExitValue.AIR_ITEM;
         if(itemStack.getType() == Material.AIR) return ItemRepairExitValue.AIR_ITEM;
 
         // Return Exit Value of setItemDurability() method.
@@ -102,6 +69,62 @@ public class ItemUtilities {
     public static ItemRepairExitValue repairItemCollection(Iterable<ItemStack> itemCollection) {
         // Return Combined Exit Value of setItemCollectionDurability() method.
         return ItemUtilities.setItemCollectionDurability(itemCollection, 0);
+    }
+
+    /**
+     * Applies an enchantment and level to a given ItemStack.
+     *
+     * @param itemStack ItemStack to manipulate
+     * @param enchantment The enchantment to apply to the ItemStack.
+     * @param enchantmentLevel The level of enchantment to apply to the ItemStack.
+     * @return The Operation Exit Code.
+     *
+     * @since 1.0.0-ALPHA
+     */
+    public static ItemEnchantExitValue enchantItem(ItemStack itemStack, Enchantment enchantment, int enchantmentLevel) {
+        // Material Type AIR Guard Statements
+        if(itemStack == null) return ItemEnchantExitValue.ILLEGAL_ITEM;
+        if(itemStack.getType() == Material.AIR) return ItemEnchantExitValue.AIR_ITEM;
+
+        // Enchantment Invalidity Guard Statements
+        if(enchantment == null) return ItemEnchantExitValue.ILLEGAL_ENCHANTMENT;
+        if(enchantmentLevel < enchantment.getStartLevel()) return ItemEnchantExitValue.UNSAFE_ENCHANT_LEVEL;
+        if(enchantment.getMaxLevel() < enchantmentLevel) return ItemEnchantExitValue.UNSAFE_ENCHANT_LEVEL;
+
+        // Perform Operation and return exit value
+        return enchantItemUnsafe(itemStack, enchantment, enchantmentLevel);
+    }
+
+    /**
+     * Applies an enchantment and level to a given ItemStack.
+     * <p>
+     * Level 0 will remove the enchantment entirely from the given ItemStack.
+     *
+     * @param itemStack ItemStack to manipulate
+     * @param enchantment The enchantment to apply to the ItemStack.
+     * @param enchantmentLevel The level of enchantment to apply to the ItemStack.
+     * @return The Operation Exit Code.
+     *
+     * @since 1.0.0-ALPHA
+     */
+    public static ItemEnchantExitValue enchantItemUnsafe(ItemStack itemStack, Enchantment enchantment, int enchantmentLevel) {
+        // Material Type AIR Guard Statements
+        if(itemStack == null) return ItemEnchantExitValue.ILLEGAL_ITEM;
+        if(itemStack.getType() == Material.AIR) return ItemEnchantExitValue.AIR_ITEM;
+
+        // Enchantment Invalidity Guard Statements
+        if(enchantment == null) return ItemEnchantExitValue.ILLEGAL_ENCHANTMENT;
+
+        // Remove enchantment if given value is zero.
+        if(enchantmentLevel == 0) return removeItemEnchantment(itemStack, enchantment);
+
+        // Perform Operation
+        itemStack.addUnsafeEnchantment(enchantment, enchantmentLevel);
+
+        // Return Exit Value Success
+        boolean isWithinBounds = enchantment.getStartLevel() <= enchantmentLevel
+                && enchantmentLevel <= enchantment.getMaxLevel();
+        return isWithinBounds ? ItemEnchantExitValue.SUCCESS : ItemEnchantExitValue.SUCCESS_UNSAFE;
     }
 
     /**
@@ -173,5 +196,20 @@ public class ItemUtilities {
 
         // Return for unflagged operation.
         return ItemRepairExitValue.SUCCESS;
+    }
+
+    /**
+     * Repairs a member of an ItemStack collection (collection method specific)
+     *
+     * @param itemStack ItemStack to operate on.
+     * @param enchantment The enchantment to remove from the ItemStack.
+     * @return The Operation Exit Code
+     *
+     * @since 1.0.0-ALPHA
+     */
+    private static ItemEnchantExitValue removeItemEnchantment(ItemStack itemStack, Enchantment enchantment) {
+        itemStack.removeEnchantment(enchantment);
+
+        return ItemEnchantExitValue.SUCCESS_REMOVE;
     }
 }

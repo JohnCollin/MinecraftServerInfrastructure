@@ -25,9 +25,8 @@
 package com.constexpr.infrastructurecore.command.player;
 
 import co.aikar.commands.annotation.*;
-import com.constexpr.infrastructurecore.InfrastructureCorePluginHandle;
 import com.constexpr.infrastructurecore.command.InfrastructureCommand;
-import com.constexpr.infrastructurecore.command.InfrastructureCommandManager;
+import com.constexpr.infrastructurecore.utilities.player.item.ItemRepairExitValue;
 import com.constexpr.infrastructurecore.utilities.player.item.ItemUtilities;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,7 +59,7 @@ public class CommandRepair extends InfrastructureCommand {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         // Perform the repairing operation on the ItemStack and get the operation exit code.
-        ItemUtilities.ItemRepairExitValue exitValue = ItemUtilities.repairItem(itemStack);
+        ItemRepairExitValue exitValue = ItemUtilities.repairItem(itemStack);
 
         // Report Exit Code back to the player.
         handleHandRepairCommandResult(player, itemStack, exitValue);
@@ -82,7 +81,7 @@ public class CommandRepair extends InfrastructureCommand {
         PlayerInventory playerInventory = player.getInventory();
 
         // Perform the repairing operation on the PlayerInventory and get the operation exit code.
-        ItemUtilities.ItemRepairExitValue exitValue = ItemUtilities.repairItemCollection(playerInventory);
+        ItemRepairExitValue exitValue = ItemUtilities.repairItemCollection(playerInventory);
 
         // Report Exit Code back to the player.
         handleAllRepairCommandResult(player, exitValue);
@@ -97,7 +96,7 @@ public class CommandRepair extends InfrastructureCommand {
      *
      * @since 1.0.0-ALPHA
      */
-    private static void handleHandRepairCommandResult(Player player, ItemStack itemStack, ItemUtilities.ItemRepairExitValue exitValue) {
+    private static void handleHandRepairCommandResult(Player player, ItemStack itemStack, ItemRepairExitValue exitValue) {
         switch(exitValue) {
             case SUCCESS:
             case PARTIAL_SUCCESS:
@@ -120,7 +119,7 @@ public class CommandRepair extends InfrastructureCommand {
      *
      * @since 1.0.0-ALPHA
      */
-    private static void handleAllRepairCommandResult(Player player, ItemUtilities.ItemRepairExitValue exitValue) {
+    private static void handleAllRepairCommandResult(Player player, ItemRepairExitValue exitValue) {
         switch(exitValue) {
             case SUCCESS:
                 player.sendMessage("Successfully Repaired Your Items.");
