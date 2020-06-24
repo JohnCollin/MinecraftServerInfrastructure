@@ -22,38 +22,43 @@
  * SOFTWARE.
  */
 
-package com.constexpr.infrastructurecore.command.player;
+package com.constexpr.infrastructurecore.utilities.io;
 
-import co.aikar.commands.annotation.*;
-import com.constexpr.infrastructurecore.command.InfrastructureCommand;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+
+import java.lang.reflect.Type;
 
 /**
- * Command Class for the /suicide command.
+ * IOUtils
  *
  * @author constexpr
  * @version 1.0.0-ALPHA
  * @since 1.0.0-ALPHA
  */
-@CommandAlias("suicide|esuicide")
-public class CommandSuicide extends InfrastructureCommand {
+public class IOUtils {
+    private static Gson gson;
+
+    static {
+        gson = new GsonBuilder().setPrettyPrinting().create();
+    }
+
     /**
-     * Command Handler for command /suicide.
+     * Standard Delegate for converting to JSON by GSON
      *
-     * @param player The Player Command Sender.
      * @since 1.0.0-ALPHA
      */
-    @Default
-    @CatchUnknown
-    @Syntax("<+tag>")
-    @CommandPermission("infrastructure.suicide")
-    @Description("Causes you to perish.")
-    public static void onSuicideCommand(@NotNull Player player, String[] args) {
-        // Perform the killing operation on the Player Command Sender.
-        player.setHealth(0.0);
+    public static String toJson(Object src) {
+        return gson.toJson(src);
+    }
 
-        // Report operation back to the player.
-        player.sendMessage("Successfully Killed " + player.getName() + ".");
+    /**
+     * Standard Delegate for converting from JSON by GSON
+     *
+     * @since 1.0.0-ALPHA
+     */
+    public static <T> T fromJson(String json, Class<T> classOfT) {
+        return gson.fromJson(json, classOfT);
     }
 }

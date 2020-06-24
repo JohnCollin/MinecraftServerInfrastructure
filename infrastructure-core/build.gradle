@@ -32,8 +32,9 @@ repositories {
 dependencies {
     compile group: 'org.jetbrains', name: 'annotations', version: '15.0'
 
-    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
+    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
     compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
 }
 

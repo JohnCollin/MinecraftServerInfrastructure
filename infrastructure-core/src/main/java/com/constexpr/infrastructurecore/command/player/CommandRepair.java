@@ -31,6 +31,7 @@ import com.constexpr.infrastructurecore.utilities.player.item.ItemUtilities;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Command Class for the /repair command.
@@ -54,7 +55,7 @@ public class CommandRepair extends InfrastructureCommand {
     @Syntax("<+tag> [hand/all]")
     @CommandPermission("infrastructure.repair")
     @Description("Repair one or more items.")
-    public static void onRepairHandCommand(Player player) {
+    public static void onRepairHandCommand(@NotNull Player player) {
         // Get the ItemStack in the Player's Main Hand.
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
@@ -76,7 +77,7 @@ public class CommandRepair extends InfrastructureCommand {
     @Syntax("<+tag> [hand/all]")
     @CommandPermission("infrastructure.repair")
     @Description("Repair one or more items.")
-    public static void onRepairAllCommand(Player player) {
+    public static void onRepairAllCommand(@NotNull Player player) {
         // Get the PlayerInventory object from the Player.
         PlayerInventory playerInventory = player.getInventory();
 
@@ -96,7 +97,7 @@ public class CommandRepair extends InfrastructureCommand {
      *
      * @since 1.0.0-ALPHA
      */
-    private static void handleHandRepairCommandResult(Player player, ItemStack itemStack, ItemRepairExitValue exitValue) {
+    private static void handleHandRepairCommandResult(Player player, ItemStack itemStack, @NotNull ItemRepairExitValue exitValue) {
         switch(exitValue) {
             case SUCCESS:
             case PARTIAL_SUCCESS:
@@ -119,7 +120,7 @@ public class CommandRepair extends InfrastructureCommand {
      *
      * @since 1.0.0-ALPHA
      */
-    private static void handleAllRepairCommandResult(Player player, ItemRepairExitValue exitValue) {
+    private static void handleAllRepairCommandResult(Player player, @NotNull ItemRepairExitValue exitValue) {
         switch(exitValue) {
             case SUCCESS:
                 player.sendMessage("Successfully Repaired Your Items.");

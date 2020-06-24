@@ -26,14 +26,22 @@ package com.constexpr.infrastructurecore.command.player;
 
 import co.aikar.commands.annotation.*;
 import com.constexpr.infrastructurecore.command.InfrastructureCommand;
+import com.constexpr.infrastructurecore.utilities.io.IOUtils;
 import com.constexpr.infrastructurecore.utilities.player.item.ItemEnchantExitValue;
 import com.constexpr.infrastructurecore.utilities.player.item.ItemUtilities;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Command Class for the /enchant command.
@@ -44,31 +52,23 @@ import java.util.HashMap;
  */
 @CommandAlias("enchant|enchantment")
 public class CommandEnchant extends InfrastructureCommand {
-    private static HashMap<String, Enchantment> enchantmentByAliases = new HashMap<>();
+    private static final EnchantmentAliasConfiguration enchantmentAliasConfiguration;
 
-    // TODO Use GSON to store this data, for now this will work just fine.
+    public static final InputStream ALIAS_INPUT_STREAM = CommandEnchant.class.getResourceAsStream("/enchantAliases.json");
+
     static {
-        enchantmentByAliases.put("alldamage|alldmg|sharpness|", Enchantment.DAMAGE_ALL);
-        enchantmentByAliases.put("arthropodsdamage|ardmg|baneofarthropods|", Enchantment.DAMAGE_ARTHROPODS);
-        enchantmentByAliases.put("undeaddamage|smite|", Enchantment.DAMAGE_UNDEAD);
-        enchantmentByAliases.put("digspeed|efficiency|", Enchantment.DIG_SPEED);
-        enchantmentByAliases.put("durability|dura|unbreaking|", Enchantment.DURABILITY);
-        enchantmentByAliases.put("fireaspect|fire|", Enchantment.FIRE_ASPECT);
-        enchantmentByAliases.put("knockback|", Enchantment.KNOCKBACK);
-        enchantmentByAliases.put("blockslootbonus|fortune|", Enchantment.LOOT_BONUS_BLOCKS);
-        enchantmentByAliases.put("mobslootbonus|mobloot|looting|", Enchantment.LOOT_BONUS_MOBS);
-        enchantmentByAliases.put("oxygen|respiration|", Enchantment.OXYGEN);
-        enchantmentByAliases.put("protection|prot|", Enchantment.PROTECTION_ENVIRONMENTAL);
-        enchantmentByAliases.put("explosionsprotection|expprot|blastprotection|", Enchantment.PROTECTION_EXPLOSIONS);
-        enchantmentByAliases.put("fallprotection|fallprot|featherfall|featherfalling|", Enchantment.PROTECTION_FALL);
-        enchantmentByAliases.put("fireprotection|fireprot|", Enchantment.PROTECTION_FIRE);
-        enchantmentByAliases.put("projectileprotection|projprot|", Enchantment.PROTECTION_PROJECTILE);
-        enchantmentByAliases.put("silktouch|", Enchantment.SILK_TOUCH);
-        enchantmentByAliases.put("waterworker|aquaaffinity|", Enchantment.WATER_WORKER);
-        enchantmentByAliases.put("firearrow|flame|", Enchantment.ARROW_FIRE);
-        enchantmentByAliases.put("arrowdamage|power|", Enchantment.ARROW_DAMAGE);
-        enchantmentByAliases.put("arrowknockback|arrowkb|punch|", Enchantment.ARROW_KNOCKBACK);
-        enchantmentByAliases.put("infinitearrows|infarrows|infinity|", Enchantment.ARROW_INFINITE);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(ALIAS_INPUT_STREAM))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        enchantmentAliasConfiguration = IOUtils.fromJson(stringBuilder.toString(), EnchantmentAliasConfiguration.class);
     }
 
     /**
@@ -180,9 +180,13 @@ public class CommandEnchant extends InfrastructureCommand {
      * @since 1.0.0-ALPHA
      */
     private static @Nullable Enchantment getEnchantmentByAlias(String alias) {
-        for(String aliasGroup : enchantmentByAliases.keySet())
-            if(aliasGroup.contains(alias + "|"))
-                return enchantmentByAliases.get(aliasGroup);
+        for(String aliasesString : enchantmentAliasConfiguration.keySet()) {
+            String[] split = aliasesString.split("\\|");
+
+            for(String aliasString : split)
+                if(aliasString.equalsIgnoreCase(alias))
+                    return Enchantment.getByKey(enchantmentAliasConfiguration.get(aliasesString));
+        }
 
         return null;
     }
@@ -201,6 +205,35 @@ public class CommandEnchant extends InfrastructureCommand {
         public UtilPair(int parseResult, ItemEnchantExitValue itemEnchantExitValue) {
             this.parseResult = parseResult;
             this.itemEnchantExitValue = itemEnchantExitValue;
+        }
+    }
+
+    /**
+     * Enchantment Aliases from JSON for GSON processing.
+     *
+     * @author constexpr
+     * @version 1.0.0-ALPHA
+     * @since 1.0.0-ALPHA
+     */
+    private static class EnchantmentAliasConfiguration {
+        public HashMap<String, NamespacedKey> enchantmentByAliases = new HashMap<>();
+
+        public EnchantmentAliasConfiguration() { }
+
+        public NamespacedKey get(String key) {
+            return enchantmentByAliases.get(key);
+        }
+
+        public NamespacedKey put(String key, NamespacedKey value) {
+            return enchantmentByAliases.put(key, value);
+        }
+
+        public Set<String> keySet() {
+            return enchantmentByAliases.keySet();
+        }
+
+        public Collection<NamespacedKey> values() {
+            return enchantmentByAliases.values();
         }
     }
 }

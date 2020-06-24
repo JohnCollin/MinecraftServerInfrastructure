@@ -1,0 +1,88 @@
+{
+  "enchantmentByAliases": {
+    "arrowknockback|arrowkb|punch|": {
+      "namespace": "minecraft",
+      "key": "punch"
+    },
+    "arthropodsdamage|ardmg|baneofarthropods|": {
+      "namespace": "minecraft",
+      "key": "bane_of_arthropods"
+    },
+    "fallprotection|fallprot|featherfall|featherfalling|": {
+      "namespace": "minecraft",
+      "key": "feather_falling"
+    },
+    "protection|prot|": {
+      "namespace": "minecraft",
+      "key": "protection"
+    },
+    "firearrow|flame|": {
+      "namespace": "minecraft",
+      "key": "flame"
+    },
+    "undeaddamage|smite|": {
+      "namespace": "minecraft",
+      "key": "smite"
+    },
+    "durability|dura|unbreaking|": {
+      "namespace": "minecraft",
+      "key": "unbreaking"
+    },
+    "oxygen|respiration|": {
+      "namespace": "minecraft",
+      "key": "respiration"
+    },
+    "waterworker|aquaaffinity|": {
+      "namespace": "minecraft",
+      "key": "aqua_affinity"
+    },
+    "explosionsprotection|expprot|blastprotection|": {
+      "namespace": "minecraft",
+      "key": "blast_protection"
+    },
+    "knockback|": {
+      "namespace": "minecraft",
+      "key": "knockback"
+    },
+    "digspeed|efficiency|": {
+      "namespace": "minecraft",
+      "key": "efficiency"
+    },
+    "blockslootbonus|fortune|": {
+      "namespace": "minecraft",
+      "key": "fortune"
+    },
+    "infinitearrows|infarrows|infinity|": {
+      "namespace": "minecraft",
+      "key": "infinity"
+    },
+    "fireaspect|fire|": {
+      "namespace": "minecraft",
+      "key": "fire_aspect"
+    },
+    "fireprotection|fireprot|": {
+      "namespace": "minecraft",
+      "key": "fire_protection"
+    },
+    "alldamage|alldmg|sharpness|": {
+      "namespace": "minecraft",
+      "key": "sharpness"
+    },
+    "mobslootbonus|mobloot|looting|": {
+      "namespace": "minecraft",
+      "key": "looting"
+    },
+    "projectileprotection|projprot|": {
+      "namespace": "minecraft",
+      "key": "projectile_protection"
+    },
+    "silktouch|": {
+      "namespace": "minecraft",
+      "key": "silk_touch"
+    },
+    "arrowdamage|power|": {
+      "namespace": "minecraft",
+      "key": "power"
+    }
+  }
+}

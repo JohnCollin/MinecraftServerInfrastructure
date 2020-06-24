@@ -22,38 +22,36 @@
  * SOFTWARE.
  */
 
-package com.constexpr.infrastructurecore.command.player;
+package com.constexpr.infrastructurecore.utilities.io;
 
-import co.aikar.commands.annotation.*;
-import com.constexpr.infrastructurecore.command.InfrastructureCommand;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
- * Command Class for the /suicide command.
+ * FileUtils
  *
  * @author constexpr
  * @version 1.0.0-ALPHA
  * @since 1.0.0-ALPHA
  */
-@CommandAlias("suicide|esuicide")
-public class CommandSuicide extends InfrastructureCommand {
+public class FileUtils {
     /**
-     * Command Handler for command /suicide.
      *
-     * @param player The Player Command Sender.
+     *
      * @since 1.0.0-ALPHA
+     * @return Whether the export was successful
      */
-    @Default
-    @CatchUnknown
-    @Syntax("<+tag>")
-    @CommandPermission("infrastructure.suicide")
-    @Description("Causes you to perish.")
-    public static void onSuicideCommand(@NotNull Player player, String[] args) {
-        // Perform the killing operation on the Player Command Sender.
-        player.setHealth(0.0);
+    public static boolean exportResource(InputStream inputStream, String destination) throws IOException {
+        boolean success = true;
 
-        // Report operation back to the player.
-        player.sendMessage("Successfully Killed " + player.getName() + ".");
+        try {
+            Files.copy(inputStream, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+        } catch(IOException e) {
+            success = false;
+        }
+
+        return success;
     }
 }
