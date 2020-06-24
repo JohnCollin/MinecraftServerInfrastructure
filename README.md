@@ -20,6 +20,8 @@ The Minecraft Server Infrastructure Project currently has one subproject:
 
 ## Acknowledgements
 
+* [Google GSON](https://github.com/google/gson) - Gson is a Java library that can be used to convert Java Objects into their JSON representation.
+
 * [Annotation Command Framework](https://github.com/aikar/commands) - ACF is an extremely powerful command framework that takes nearly every concept of boilerplate code commonly found in command handlers, and abstracts them away behind annotations.
 
 * [Paper](https://papermc.io/) - The next generation of Minecraft Servers, compatible with Spigot plugins and offering uncompromising performance.
